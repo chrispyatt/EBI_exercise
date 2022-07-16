@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block title %}
+    Home
+{% endblock %}
+{% block content %}
+    <h1>HLA Database</h1>
+    Welcome to the CUH Tissue Typing HLA Database.
+    <br>
+    <br>
+    Use the boxes below to search by patient number (column 'name' in the old spreadsheets) or by allele (column 'result' in the old spreadsheets).
+    Allele frequency as shown is the frequency within this database (NB: Allele counts are currently pooled for DRB3/4/5 so actual AF is higher than shown).
+    For external information click the link in the 'Additional Information' column, if present.
+    <br>
+    <br>
+    If you need to add the results of a sequencing run, click 'Import Data' at the top of the page.
+
+    <h2>Search</h2>
+
+    <form action="{% url 'home' %}" method="get">
+        <input name="q" type="text" placeholder="Search by organism name">
+        <input name="r" type="text" placeholder="Search by database type (e.g. cdna, funcgen, etc.)">
+        <input name="s" type="text" placeholder="Search by ensembl release version">
+        <button type="submit" class="save btn btn-default">Search</button>
+    </form>>
+
+    <style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td,th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    </style>
+
+
+    <ul>
+        <table>
+        <tr>
+            <th>Organism Name</th>
+            <th>Database Type</th>
+            <th>Ensembl Release</th>
+            <th>Database Name</th>
+        </tr>
+        {% for result in object_list %}
+            <tr>
+                <td>{{ result.organismID.name }}</td>
+                <td>{{ result.genome_database_id.type }}</td>
+                <td>{{ result.data_release_id.ensembl_release }}</td>
+                <td>{{ result.genome_database_id.dbname }}</td>
+                <td>
+                    {% for i in result.externalInfo.split %}
+                    <a href={{ i }}>{{ i }}</a><br>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% empty %}
+        <br>No results to show.
+        {% endfor %}
+        </table>
+    </ul>
+
+{% endblock %}
