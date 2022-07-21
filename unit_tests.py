@@ -1,4 +1,8 @@
-
+'''
+I have not implemented unit tests for this application yet as the connection logic is not
+working but my intention was to use a combination of AssertHttpResponse() and AssertEquals()
+calls to check that the correct response was given in each case.
+'''
 
 
 def test_http_calls():
@@ -37,7 +41,7 @@ def test_non_get():
     '''
     pass
 
-# below could be in test_http_calls...
+
 def test_no_db():
     '''
     Checks that non-matching db type (dbtype not in database) returns empty list

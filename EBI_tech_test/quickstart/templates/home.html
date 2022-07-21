@@ -17,10 +17,10 @@
     <h2>Search</h2>
 
     <form action="{% url 'home' %}" method="get">
-        <input name="q" type="text" placeholder="Search by organism name">
-        <input name="r" type="text" placeholder="Search by database type (e.g. cdna, funcgen, etc.)">
-        <input name="s" type="text" placeholder="Search by ensembl release version">
-        <button type="submit" class="save btn btn-default">Search</button>
+        <input name="org" type="text" placeholder="Search by organism name">
+        <input name="dbtype" type="text" placeholder="Search by database type (e.g. cdna, funcgen, etc.)">
+        <input name="rel" type="text" placeholder="Search by ensembl release version">
+        <button name="search" value="search" type="submit" class="save btn btn-default">Search</button>
     </form>>
 
     <style>
@@ -51,15 +51,10 @@
         </tr>
         {% for result in object_list %}
             <tr>
-                <td>{{ result.organismID.name }}</td>
-                <td>{{ result.genome_database_id.type }}</td>
-                <td>{{ result.data_release_id.ensembl_release }}</td>
-                <td>{{ result.genome_database_id.dbname }}</td>
-                <td>
-                    {% for i in result.externalInfo.split %}
-                    <a href={{ i }}>{{ i }}</a><br>
-                    {% endfor %}
-                </td>
+                <td>{{ genome_database.genome_id.organism_id.name }}</td>
+                <td>{{ genome_database.type }}</td>
+                <td>{{ genome_database.genome_id.data_release_id.ensembl_release }}</td>
+                <td>{{ genome_database.dbname }}</td>
             </tr>
         {% empty %}
         <br>No results to show.
