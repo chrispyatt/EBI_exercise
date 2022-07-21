@@ -18,7 +18,7 @@ class Result:
         self.dbname = dbname
 
 
-
+# I think I should change this to a viewset as in the REST framework docs but not sure where to put the queryset logic (separate function perhaps?)
 class HomePageView(ListView):
     '''Renders home page.'''
     model = Genome_Database
@@ -30,14 +30,9 @@ class HomePageView(ListView):
         if self.request.GET.get('search'):
             try:
                 query = self.request.GET.get('org')
-                print(query)
                 org_id = Organism.objects.get(name=query).organism_id
-                print(f'org_id {org_id}')
-                print(type(org_id))
-                gen_id = Genome.objects.get(organism_id=org_id).genome_id
-                print(gen_id)
+                gen_id = Genome.objects.get(organism_id=org_id).genome_id # getting ForeignKey not working without routers
                 search_dict['org'] = Genome_Database.objects.filter(genome_id=gen_id)
-                #print(search_dict)
                 filter_str.append('Organism name: ' + query + ', ')
             except ObjectDoesNotExist:
                 pass
@@ -66,12 +61,4 @@ class HomePageView(ListView):
 
 
 
-def get_db_id():
-    pass
-
-def get_org_id():
-    pass
-
-def get_release_id():
-    pass
 
