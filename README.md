@@ -16,7 +16,8 @@ NOTE: needs routers (I think) to fix the foreign key issue (looks for non-existe
 
 
 
-Question for Vinay and Sanjay:
+Questions for Vinay and Sanjay:
 
 I know Django can scale as many large platforms use it - so what considerations would you make to ensure this app could scale (or is there something native to django which takes it out of the dev's hands?)
 
+Could you also point me towards some good resources on automated testing / deployment? That's an avenue I'd like to explore.
