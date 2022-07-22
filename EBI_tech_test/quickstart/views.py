@@ -30,11 +30,13 @@ class HomePageView(ListView):
         if self.request.GET.get('search'):
             try:
                 query = self.request.GET.get('org')
+                # if query < 3 char return 400
                 org_id = Organism.objects.get(name=query).organism_id
                 gen_id = Genome.objects.get(organism_id=org_id).genome_id # getting ForeignKey not working without routers
                 search_dict['org'] = Genome_Database.objects.filter(genome_id=gen_id)
                 filter_str.append('Organism name: ' + query + ', ')
             except ObjectDoesNotExist:
+                # return http response 404 
                 pass
             try:
                 query = self.request.GET.get('dbtype')
@@ -42,10 +44,11 @@ class HomePageView(ListView):
                 search_dict['db'] = Genome_Database.objects.filter(type=query)
                 filter_str.append('Database type: ' + query + ', ')
             except ObjectDoesNotExist:
+                # return empty json
                 pass
             try:
                 query = self.request.GET.get('rel')
-                print(query)
+                # if query not integer return 400
                 rel_id = Data_Release.objects.get(ensembl_version=query).data_release_id
                 gen_id = Genome.objects.get(data_release_id=rel_id).genome_id
                 search_dict['rel'] = Genome_Database.objects.filter(genome_id=gen_id)
@@ -54,7 +57,7 @@ class HomePageView(ListView):
                 pass
         else:
             pass
-
+        # if search dict is empty return 400 --- better to do this before doing all the query stuff above by checking GET request values first
         serializer = ResultSerializer(search_dict)
         json = JSONRenderer().render(serializer.data)
         return json
